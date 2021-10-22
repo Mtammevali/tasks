@@ -2,10 +2,22 @@
 // event elements
 const form = document.querySelector('form');
 const taskList = document.querySelector('.collection');
+const deleteTasksBtn = document.querySelector("#delete-tasks")
 
 // events
 form.addEventListener('submit', addTask);
 taskList.addEventListener('click', deleteTask);
+deleteTasksBtn.addEventListener('click', deleteTasks);
+
+
+// delete all tasks
+function deleteTasks(event){
+        while(taskList.firstChild){
+
+            taskList.removeChild((taskList.firstChild));
+        }
+
+}
 
 function deleteTask(event){
     if(event.target.textContent === 'X'){
