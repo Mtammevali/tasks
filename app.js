@@ -1,23 +1,55 @@
-
 // event elements
 const form = document.querySelector('form');
 const taskList = document.querySelector('.collection');
-const deleteTasksBtn = document.querySelector("#delete-tasks")
+const deleteTasksBtn = document.querySelector('#delete-tasks');
 
 // events
 form.addEventListener('submit', addTask);
 taskList.addEventListener('click', deleteTask);
 deleteTasksBtn.addEventListener('click', deleteTasks);
+document.addEventListener('DOMContentLoaded', getTasksFromLocalStorage);
 
-
-// delete all tasks
-function deleteTasks(event){
-        while(taskList.firstChild){
-
-            taskList.removeChild((taskList.firstChild));
-        }
-
+function getTasksFromLocalStorage(){
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = [];
+    } else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+    tasks.forEach(function (tasksElement){
+        // create <li> element
+        const li = document.createElement('li');
+        // add css class
+        li.className = 'collection-item';
+        // create text element
+        const text = document.createTextNode(tasksElement);
+        // add text to <li>
+        li.appendChild(text);
+        // create <a> element
+        const link = document.createElement('a');
+        // add css class
+        link.className = 'secondary-content';
+        // set href atribute to <a>
+        link.setAttribute('href', '#');
+        // add text content to <a>
+        link.appendChild(document.createTextNode('X'));
+        // add <a> to <li>
+        li.appendChild(link);
+        // add li to ul
+        const ul = document.querySelector('.collection');
+        ul.appendChild(li);
+    });
 }
+
+function deleteTasks(){
+    // event.target.previousElementSibling.innerHTML = '';
+    // taskList.innerHTML = '';
+    while (taskList.firstChild) {
+        taskList.removeChild(taskList.firstChild);
+    }
+    deleteAllTaskFromLocalStorage();
+}
+
 function deleteAllTaskFromLocalStorage(){
     // localStorage.clear();
     if(localStorage.getItem('tasks') === null){
@@ -36,6 +68,7 @@ function deleteTask(event){
         }
     }
 }
+
 function deleteTaskFromLocalStorage(task){
     let tasks;
     if(localStorage.getItem('tasks') === null){
@@ -78,10 +111,10 @@ function addTask(event){
     ul.appendChild(li);
     // save task
     addTaskToLocalStorage(task);
-    taskInput.value ="";
+    taskInput.value = '';
     event.preventDefault();
 }
-//tasks saving function.
+
 function addTaskToLocalStorage(task){
     let tasks;
     if(localStorage.getItem('tasks') === null){
